@@ -10,7 +10,7 @@ In the unrooted/ folder
 
 ```python
 python main.py --dataset DS1 --psp --empFreq
-python main.py --dataset DS1 --psp --nParticles 20 --gradMethod rws --empFreq
+python main.py --dataset DS1 --psp --nParticle 20 --gradMethod rws --empFreq
 ```
 
 In the rooted/ folder
