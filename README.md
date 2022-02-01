@@ -7,6 +7,7 @@ Pytorch Implementation of Variational Bayesian Phylogenetic Inference
 * [ete3](http://etetoolkit.org)
 * [Biopython](http://biopython.org)
 * [bitarray](https://pypi.org/project/bitarray/)
+* [dendropy](https://dendropy.org)
 
 
 Use the command line to run the codes
