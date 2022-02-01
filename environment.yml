@@ -1,0 +1,12 @@
+name: vbpi-torch
+channels:
+  - conda-forge
+dependencies:
+  - python >= 3.7
+  - ete3
+  - pip
+  - pytorch
+  - pip:
+      - biopython
+      - bitarray
+      - dendropy
