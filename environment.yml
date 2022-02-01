@@ -5,7 +5,7 @@ dependencies:
   - python >= 3.7
   - ete3
   - pip
-  - pytorch
+  - pytorch=0.4.1
   - pip:
       - biopython
       - bitarray
