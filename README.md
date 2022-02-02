@@ -11,7 +11,12 @@ Pytorch Implementation of Variational Bayesian Phylogenetic Inference
 * [PyTorch](https://pytorch.org/)
 
 
-Use the command line to run the codes
+## Preparation
+
+Unzip `DENV4_constant_golden_run.trees.zip` in the `rooted/data/DENV4` directory.
+
+
+## Running
 
 Examples:
 
