@@ -10,6 +10,13 @@ Pytorch Implementation of Variational Bayesian Phylogenetic Inference
 * [ete3](http://etetoolkit.org)
 * [PyTorch](https://pytorch.org/)
 
+You can build and enter a conda environment with all of the dependencies built in using the supplied `environment.yml` file via:
+
+```
+conda env create -f environment.yml
+conda activate vbpi-torch
+```
+
 
 ## Preparation
 
