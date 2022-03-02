@@ -1,0 +1,11 @@
+execute alignment.nex;
+
+begin mrbayes;
+    set autoclose=yes nowarn=yes seed=SEED swapseed=1337;
+    lset nst=1 rates=equal;
+    prset statefreqpr=fixed(equal) topologypr=uniform brlenspr=unconstrained:exp(10.0);
+    mcmcp nruns=1 nchains=4 ngen=1000000000 samplefreq=1000 printfreq=10000 diagnfreq=1000 file=mb-out-RUN;
+    mcmc;
+    sump burnin=250000000;
+    sumt burnin=250000000;
+end;
