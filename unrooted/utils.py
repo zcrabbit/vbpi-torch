@@ -80,7 +80,7 @@ def mcmc_treeprob(filename, data_type, truncate=None, taxon=None):
     return mcmc_samp_tree_dict, mcmc_samp_tree_name, mcmc_samp_tree_wts
     
     
-def summary(dataset, file_path):
+def summary(dataset, file_path, samp_size=750001):
     tree_dict_total = OrderedDict()
     tree_dict_map_total = defaultdict(float)
     tree_names_total = []
@@ -88,7 +88,7 @@ def summary(dataset, file_path):
     n_samp_tree = 0
     for i in range(1,11):
         tree_dict_rep, tree_name_rep, tree_wts_rep = mcmc_treeprob(file_path + dataset + '/rep_{}/'.format(i) + dataset + '.trprobs', 'nexus', taxon='keep')
-        tree_wts_rep = np.round(np.array(tree_wts_rep)*750001)
+        tree_wts_rep = np.round(np.array(tree_wts_rep)*samp_size)
  
         for i, name in enumerate(tree_name_rep):
             tree_id = tree_dict_rep[name].get_topology_id()
@@ -100,7 +100,7 @@ def summary(dataset, file_path):
             tree_dict_map_total[tree_id] += tree_wts_rep[i]
     
     for key in tree_dict_map_total:
-        tree_dict_map_total[key] /= 10*750001
+        tree_dict_map_total[key] /= 10*samp_size
 
     for name in tree_names_total:
         tree_wts_total.append(tree_dict_map_total[tree_dict_total[name].get_topology_id()])  

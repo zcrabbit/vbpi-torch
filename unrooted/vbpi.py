@@ -15,7 +15,7 @@ import pdb
 
 
 class VBPI(nn.Module):
-    EPS = 1e-40
+    EPS = np.finfo(float).eps
     
     def __init__(self, taxa, rootsplit_supp_dict, subsplit_supp_dict, data, pden, subModel, emp_tree_freq=None,
                  scale=0.1, psp=True, feature_dim=2):
@@ -125,7 +125,7 @@ class VBPI(nn.Module):
         
     
     def learn(self, stepsz, maxiter=100000, test_freq=1000, lb_test_freq=5000, anneal_freq=20000, anneal_rate=0.75, n_particles=10,
-              init_inverse_temp=0.001, warm_start_interval=50000, method='vimco', save_to_path=None):
+              init_inverse_temp=0.001, warm_start_interval=50000, checkpoint_freq=-1, method='vimco', save_to_path=None):
         lbs, lls = [], []
         test_kl_div, test_lb = [], []
         
@@ -176,6 +176,10 @@ class VBPI(nn.Module):
             if it % anneal_freq == 0:
                 for g in optimizer.param_groups:
                     g['lr'] *= anneal_rate
+            
+            if checkpoint_freq > 0:
+                if it % checkpoint_freq == 0 and save_to_path is not None:
+                    torch.save(self.state_dict(), save_to_path.replace('.pt', 'checkpoint_{}.pt'.format(it)))
         
         if save_to_path is not None:
             torch.save(self.state_dict(), save_to_path)
