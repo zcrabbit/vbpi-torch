@@ -32,6 +32,8 @@ In the unrooted/ folder
 ```bash
 python main.py --dataset DS1 --psp --empFreq
 python main.py --dataset DS1 --psp --nParticle 20 --gradMethod rws --empFreq
+python main.py --dataset flu100 --psp
+python main.py --dataset flu100 --psp --supportType mcmc -cf 100000
 ```
 
 In the rooted/ folder
