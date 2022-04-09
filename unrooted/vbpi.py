@@ -38,6 +38,9 @@ class VBPI(nn.Module):
 
         torch.set_num_threads(1)
 
+        pcsp_counts = [len(v) for k,v in self.tree_model.subsplit_supp_dict]
+        print(pcsp_counts)
+
     def load_from(self, state_dict_path):
         self.load_state_dict(torch.load(state_dict_path))
         self.eval()
@@ -129,6 +132,8 @@ class VBPI(nn.Module):
         lbs, lls = [], []
         test_kl_div, test_lb = [], []
 
+        sbn_parameter_rows = []
+
         if not isinstance(stepsz, dict):
             stepsz = {'tree': stepsz, 'branch': stepsz}
 
@@ -157,6 +162,9 @@ class VBPI(nn.Module):
 
             self.tree_model.update_CPDs()
 
+            if it % (test_freq/10) == 0:
+                sbn_parameter_rows.append(self.tree_model.CPD_params.detach().numpy().copy())
+
             if it % test_freq == 0:
                 run_time += time.time()
                 if self.emp_tree_freq:
@@ -183,5 +191,9 @@ class VBPI(nn.Module):
 
         if save_to_path is not None:
             torch.save(self.state_dict(), save_to_path)
+
+        stacked = np.stack(sbn_parameter_rows)
+        np.savetxt("sbn_parameters.csv", stacked, delimiter=",")
+
 
         return test_lb, test_kl_div
