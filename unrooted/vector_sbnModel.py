@@ -282,7 +282,7 @@ class SBN(nn.Module):
         return subsplit_idxes_list
         
 
-    def loglikelihood(self, tree, no_clade_bitarr=True):
+    def loglikelihood(self, tree, no_clade_bitarr=True, clamp_min=1e-06):
         copy_tree = tree.copy()
         if no_clade_bitarr:
             for node in copy_tree.traverse('postorder'):
@@ -290,17 +290,17 @@ class SBN(nn.Module):
                     node.clade_bitarr = self.toBitArr.from_clade(node.get_leaf_names())  
                         
         with torch.no_grad():
-            logprob = self.forward(copy_tree)
+            logprob = self.forward(copy_tree, clamp_min=clamp_min)
         return logprob.item()
         
         
-    def forward(self, tree, return_idxes_list=False):
+    def forward(self, tree, return_idxes_list=False, clamp_min=1e-06):
         subsplit_idxes_list = self.grab_subsplit_idxes(tree)
 
         CPDs = torch.cat((self.CPDs, torch.tensor([1.0, 0.0])))
         mapped_idxes_list = torch.LongTensor(subsplit_idxes_list)
         
         if not return_idxes_list:
-            return CPDs[mapped_idxes_list].clamp(1e-06).log().sum(1).logsumexp(0)
+            return CPDs[mapped_idxes_list].clamp(clamp_min).log().sum(1).logsumexp(0)
         else:
-            return CPDs[mapped_idxes_list].clamp(1e-06).log().sum(1).logsumexp(0), subsplit_idxes_list
+            return CPDs[mapped_idxes_list].clamp(clamp_min).log().sum(1).logsumexp(0), subsplit_idxes_list

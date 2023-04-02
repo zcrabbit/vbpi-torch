@@ -106,6 +106,36 @@ def summary(dataset, file_path, samp_size=750001):
         tree_wts_total.append(tree_dict_map_total[tree_dict_total[name].get_topology_id()])  
         
     return tree_dict_total, tree_names_total, tree_wts_total
+    
+    
+def get_tree_list(filename, data_type, burnin=0, truncate=None):
+    samp_tree_stats = Phylo.parse(filename, data_type)
+    tree_dict = {}
+    tree_wts_dict = defaultdict(float)
+    tree_names = []
+    i, num_trees = 0, 0
+    for tree in samp_tree_stats:
+        num_trees += 1
+        if num_trees < burnin:
+            continue
+        handle = StringIO()
+        Phylo.write(tree, handle, 'newick')
+        ete_tree = Tree(handle.getvalue().strip())
+        handle.close()
+        tree_id = ete_tree.get_topology_id()
+        if tree_id not in tree_wts_dict:
+            tree_name = 'tree_{}'.format(i)
+            tree_dict[tree_name] = ete_tree
+            tree_names.append(tree_name)
+            i += 1
+        tree_wts_dict[tree_id] += 1.0
+                
+        if truncate and num_trees == truncate+burnin:
+            break
+    
+    tree_wts = [tree_wts_dict[tree_dict[tree_name].get_topology_id()]/(num_trees-burnin) for tree_name in tree_names]
+        
+    return tree_dict, tree_names, tree_wts
 
 
 def get_tree_list_raw(filename, burnin=0, truncate=None, hpd=0.95):
