@@ -32,8 +32,19 @@ In the `unrooted/` folder
 python main.py --dataset DS1 --psp --empFreq
 python main.py --dataset DS1 --psp --nParticle 20 --gradMethod rws --empFreq
 python main.py --dataset flu100 --psp
-python main.py --dataset flu100 --psp --supportType mcmc -cf 100000
+python main.py --dataset flu100 --psp --supportType mcmc -cf 100000 --maxIter 400000
 ```
+* The lower bounds are saved at *_test_lb.npy file.
+* The KL divergences are saved at *_kl_div.npy file (if --empFreq is turned on).
+* The trained model is saved at *.pt file.
+
+One can also load the checkpoints for testing (e.g., KL computation)
+```bash
+python main.py --dataset flu100 --psp --supportType mcmc --empFreq --test --datetime "20xx-xx-xx xx:xx:xx.xxxxxx"
+```
+where the value for --datetime is the datetime for the saved model that you want to test.
+
+See more concrete examples here: [ds1.ipynb](https://github.com/zcrabbit/vbpi-torch/blob/main/unrooted/notebooks/ds1.ipynb)
 
 In the `rooted/` folder
 ```bash
