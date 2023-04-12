@@ -26,9 +26,9 @@ Unzip `DENV4_constant_golden_run.trees.zip` in the `rooted/data/DENV4` directory
 
 These steps will reproduce the experiments in the preprint [A Variational Approach to Bayesian Phylogenetic Inference](http://arxiv.org/abs/2204.07747).
 
-* The evidence lower bounds will be saved to *_test_lb.npy file.
-* The KL divergences will be saved to *_kl_div.npy file (if --empFreq is turned on).
-* The trained model will be saved to *.pt file.
+* The evidence lower bounds will be saved to a `*_test_lb.npy` file.
+* The KL divergences will be saved to a `*_kl_div.npy` file (if `--empFreq` is turned on).
+* The trained model will be saved to a `*.pt` file.
 
 
 In the `unrooted/` folder
